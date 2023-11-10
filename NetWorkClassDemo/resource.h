@@ -4,10 +4,8 @@
 //
 #define IDD_NETWORKCLASSDEMO_DIALOG     102
 #define IDR_MAINFRAME                   128
-#define IDD_DIALOG1                     130
 #define IDD_PROCESSINFO_DIALOG          130
-#define IDD_DIALOG2                     132
-#define IDC_TAB1                        1000
+#define IDC_TAB_MAIN                    1000
 
 // Next default values for new objects
 // 
