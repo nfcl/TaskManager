@@ -1,26 +1,33 @@
-﻿
-// NetWorkClassDemoDlg.h: 头文件
-//
+﻿// NetWorkClassDemoDlg.h: 头文件
+#ifndef _NETWORKCLASSDEMODLG_H
+#define _NETWORKCLASSDEMODLG_H
 
-#pragma once
-
+#include "ProcessInfoDialog.h"
+#include "LocalPortInfoDialog.h"
 
 // CNetWorkClassDemoDlg 对话框
 class CNetWorkClassDemoDlg : public CDialogEx
 {
-// 构造
+	// 构造
 public:
-	CNetWorkClassDemoDlg(CWnd* pParent = nullptr);	// 标准构造函数
+	// 标准构造函数
+	CNetWorkClassDemoDlg(CWnd* pParent = nullptr);
 
-// 对话框数据
+	// 对话框数据
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_NETWORKCLASSDEMO_DIALOG };
 #endif
 
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV 支持
+protected:
+	// DDX/DDV 支持
+	virtual void DoDataExchange(CDataExchange* pDX);
 
-// 实现
+	CTabCtrl			m_tab;
+	int					m_CurSelTab;
+	ProcessInfoDialog	m_page1;
+	LocalPortInfoDialog	m_page2;
+	CDialog*			pDialog[2];
+	// 实现
 protected:
 	HICON m_hIcon;
 
@@ -29,4 +36,8 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnTcnSelchangeTabMain(NMHDR* pNMHDR, LRESULT* pResult);
 };
+
+#endif // !_NETWORKCLASSDEMODLG_H

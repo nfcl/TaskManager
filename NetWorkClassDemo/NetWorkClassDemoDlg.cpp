@@ -19,12 +19,15 @@ CNetWorkClassDemoDlg::CNetWorkClassDemoDlg(CWnd* pParent /*=nullptr*/)
 
 void CNetWorkClassDemoDlg::DoDataExchange(CDataExchange* pDX)
 {
+	DDX_Control(pDX, IDC_TAB_MAIN, m_tab);
+
 	CDialogEx::DoDataExchange(pDX);
 }
 
 BEGIN_MESSAGE_MAP(CNetWorkClassDemoDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_NOTIFY(TCN_SELCHANGE, IDC_TAB_MAIN, &CNetWorkClassDemoDlg::OnTcnSelchangeTabMain)
 END_MESSAGE_MAP()
 
 // CNetWorkClassDemoDlg 消息处理程序
@@ -37,8 +40,27 @@ BOOL CNetWorkClassDemoDlg::OnInitDialog()
 	//  执行此操作
 	SetIcon(m_hIcon, TRUE);			// 设置大图标
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
-	
-	// TODO: 在此添加额外的初始化代码
+
+	m_tab.InsertItem(0, _T("进程"));
+	m_tab.InsertItem(1, _T("本地端口开放情况"));
+
+	m_page1.Create(IDD_PROCESSINFO_DIALOG, &m_tab);
+	m_page2.Create(IDD_LOCALPORTINFO_DIALOG, &m_tab);
+
+	CRect rc;
+	m_tab.GetClientRect(rc);
+	rc.top += 20;
+	rc.bottom -= 0;
+	rc.left += 0;
+	rc.right -= 0;
+	m_page1.MoveWindow(&rc);
+	m_page2.MoveWindow(&rc);
+
+	pDialog[0] = &m_page1;
+	pDialog[1] = &m_page2;
+	pDialog[0]->ShowWindow(SW_SHOW);
+	pDialog[1]->ShowWindow(SW_HIDE);
+	m_CurSelTab = 0;
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -79,3 +101,16 @@ HCURSOR CNetWorkClassDemoDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+void CNetWorkClassDemoDlg::OnTcnSelchangeTabMain(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	// TODO: 在此添加控件通知处理程序代码
+
+	//把当前的页面隐藏起来
+	pDialog[m_CurSelTab]->ShowWindow(SW_HIDE);
+	//得到新的页面索引
+	m_CurSelTab = m_tab.GetCurSel();
+	//把新的页面显示出来
+	pDialog[m_CurSelTab]->ShowWindow(SW_SHOW);
+
+	*pResult = 0;
+}
